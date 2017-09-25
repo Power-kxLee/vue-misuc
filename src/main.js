@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
-import { Header } from 'mint-ui';
-Vue.component(Header.name, Header);
+import MuseUI from 'muse-ui';
+import 'muse-ui/dist/muse-ui.css';
+Vue.use(MuseUI);
 Vue.config.productionTip = false;
-
 new Vue({
     el: '#app',
     router,

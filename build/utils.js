@@ -1,7 +1,6 @@
 var path = require('path');
 var config = require('../config');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
 exports.assetsPath = function(_path) {
     var assetsSubDirectory = process.env.NODE_ENV === 'production' ?
         config.build.assetsSubDirectory :
@@ -54,6 +53,7 @@ exports.cssLoaders = function(options) {
         stylus: generateLoaders('stylus'),
         styl: generateLoaders('stylus')
     };
+
 };
 
 // Generate loaders for standalone style files (outside of .vue)
