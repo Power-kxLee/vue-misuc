@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <mt-header fixed title="固定在顶部"></mt-header>
     <img src="./assets/logo.png">
     <router-view></router-view>
   </div>
