@@ -1,11 +1,11 @@
 <template>
-    <header>
+    <header class="appHeader">
         <mu-appbar title="网易云音乐">
         </mu-appbar>
-        <mu-tabs :value="activeTab">
-            <mu-tab value="tab1" title="TAB ONE"/>
-            <mu-tab value="tab2" title="TAB TWO"/>
-            <mu-tab value="tab3" title="TAB ACTIVE"/>
+        <mu-tabs :value="activeTab" @change="handleTabChange">
+            <mu-tab value="/index" title="推荐音乐"/>
+            <mu-tab value="/hot" title="热歌榜"/>
+            <mu-tab value="/query" title="搜索"/>
         </mu-tabs>
     </header>
 </template>
@@ -13,8 +13,26 @@
     export default{
         data() {
             return {
-                activeTab: 'tab1'
+                activeTab: '/index'
             };  
+        },
+        created() {
+            this.activeTab = this.$router.history.current.path;
+        },
+        methods: {
+            handleTabChange(val) {
+                this.activeTab = val;
+                this.$router.push(val);
+            }
         }
     };
 </script>
+<style type="text/css" scoped>
+    .appHeader{
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        z-index: 20;
+        width: 100%;
+    }
+</style>

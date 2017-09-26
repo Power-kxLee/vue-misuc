@@ -108,7 +108,7 @@ module.exports = {
     'no-this-before-super': 2, // 禁止在构造函数中，在调用 super() 之前使用 this 或 super
     'no-throw-literal': 2, // 禁止抛出异常字面量
     'no-trailing-spaces': 0, // 禁用行尾空格
-    'no-undef': 2, // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
+    'no-undef': 0, // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
     'no-undef-init': 2,
     'no-undefined': 0,
     'no-underscore-dangle': 0,

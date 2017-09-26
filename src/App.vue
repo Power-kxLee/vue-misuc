@@ -4,11 +4,8 @@
   </div>
 </template>
 
-<script>
-    export default {
-        name: 'app'
-    };
-</script>
 <style>
-
+    #app{
+        padding-top: 104px;
+    }
 </style>

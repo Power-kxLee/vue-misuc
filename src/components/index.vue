@@ -1,6 +1,5 @@
 <template>
     <div class="music-main">
-        <music-header></music-header>
         <div class="musice-content">
             <div class="gridlist-demo-container">
                 <mu-grid-list class="gridlist-demo" :cols="3">
@@ -15,7 +14,7 @@
             </div>
             <mu-list>
                 <mu-sub-header inset>Folders</mu-sub-header>
-                <mu-list-item title="Photos" describeText="Jan 9, 2014">
+                <mu-list-item title="Photos" describeText="Jan 9, 2014" to='/music'>
                     <mu-avatar icon="folder" slot="leftAvatar"/>
                     <mu-icon value="info" slot="right"/>
                 </mu-list-item>
@@ -28,23 +27,10 @@
                     <mu-icon value="info" slot="right"/>
                 </mu-list-item>
             </mu-list>
-            <mu-divider inset/>
-            <mu-list>
-                <mu-sub-header inset>Files</mu-sub-header>
-                <mu-list-item title="Vacation itinerary" describeText="Jan 20, 2014">
-                    <mu-avatar icon="assignment" backgroundColor="blue" slot="leftAvatar" />
-                    <mu-icon value="info" slot="right"/>
-                </mu-list-item>
-                <mu-list-item title="Kitchen remodel" describeText="Jan 10, 2014">
-                    <mu-avatar icon="insert_chart" backgroundColor="yellow600" slot="leftAvatar" />
-                    <mu-icon value="info" slot="right"/>
-                </mu-list-item>
-            </mu-list>
         </div>
     </div>
 </template>
 <script type="text/javascript">
-    import musicHeader from './common/header.vue';
     export default{
         data() {
             return {
@@ -73,20 +59,9 @@
                         image: '../assets/images/morning.jpg',
                         title: 'Morning',
                         author: 'mokayi'
-                    }, {
-                        image: '../assets/images/vegetables.jpg',
-                        title: 'Vegetables',
-                        author: 'NUyyyyyyy'
-                    }, {
-                        image: '../assets/images/water-plant.jpg',
-                        title: 'water',
-                        author: 'TDDyyyyyyy'
                     }
                 ]
             };
-        },
-        components: {
-            musicHeader
         }
     };
 </script>
