@@ -4,8 +4,3 @@
   </div>
 </template>
 
-<style>
-    #app{
-        padding-top: 104px;
-    }
-</style>
