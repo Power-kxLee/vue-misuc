@@ -73,7 +73,7 @@
     flex-wrap: wrap;
     justify-content: space-around;
     .gridlist-demo{
-        width: 500px;
+        width: 100%;
         height: 450px;
         overflow-y: auto;
     }

@@ -1,22 +1,27 @@
 <template>
     <div class="music-main">
-        <audio :src="musicUrl" autoplay="autoplay">
+        <audio :src="musicUrl" ref="audio" autoplay="autoplay">
         </audio>
         <div class="open-music-content" :style="`background-image: url(${this.musicImg})`">
-            <div class="m-song-disc">
-                <div class="m-song-turn">
-                    <div class="m-song-img">
-                        <img :src="musicImg">
+            <div class='open-music-warp'>
+                <div class="m-song-disc">
+                    <div class="m-song-turn">
+                        <div class="m-song-img">
+                            <img :src="musicImg">
+                        </div>
                     </div>
                 </div>
+                <article class="m-song-info">
+                    <header class="m-song-header">
+                        <span class="m-song-sname">{{musicName}}</span>
+                        <span class="m-song-gap">-</span>
+                        <span class="m-song-autr">{{singerName}}</span>
+                    </header>
+                    <section>
+                        <p class="m-song-lritem">{{lrc}}</p>
+                    </section>
+                </article>
             </div>
-            <article class="m-song-info">
-                <header class="m-song-header">
-                    <span class="m-song-sname">{{musicName}}</span>
-                    <span class="m-song-gap">-</span>
-                    <span class="m-song-autr">Do As Infinity</span>
-                </header>
-            </article>
         </div>
     </div>
 </template>
@@ -26,10 +31,23 @@
             return {
                 musicImg: '',
                 musicName: '',
-                musicUrl: ''
+                musicUrl: '',
+                singerName: '',
+                lrc: ''
             };
         },
         mounted() {
+            let lyricsArray = {};
+            let audioDom = this.$refs.audio;
+            audioDom.ontimeupdate = () =>{
+                // console.log(audioDom.duration);
+                let currentTime = parseFloat(audioDom.currentTime.toFixed(0));
+                if (lyricsArray[currentTime]) {
+                    console.log(lyricsArray[currentTime]);
+                    this.lrc = lyricsArray[currentTime];
+                }
+            };
+            let singerNameArray = [];
             this.$ajax.get(`${this.$store.state.misucUrl}/music/url?id=${this.$route.query.id}`).then(d => {
                 // console.log(d);
                 if (d.status === 200) {
@@ -37,10 +55,36 @@
                 }
             });
             this.$ajax.get(`${this.$store.state.misucUrl}/song/detail?ids=${this.$route.query.id}`).then(d => {
-                console.log(d);
+                // console.log(d);
+                let songs = d.data.songs[0];
                 if (d.status === 200) {
-                    this.musicImg = d.data.songs[0].al.picUrl;
+                    this.musicName = songs.name;
+                    this.musicImg = songs.al.picUrl;
+                    this.singerName = songs.ar[0].name;
+                    if (songs.ar.length > 0) {
+
+                        songs.ar.forEach((val, i) => {
+                            singerNameArray.push(val.name);
+                        });
+                        this.singerName = singerNameArray.join('/');
+                    }
                     // this.musicUrl = d.data.data[0].url;
+                }
+            });
+            this.$ajax.get(`${this.$store.state.misucUrl}/lyric?id=${this.$route.query.id}`).then(d => {
+                console.log(d);
+                // console.log(d.data.lrc.lyric.split('\n'));
+                if (d.status === 200) {
+                    d.data.lrc.lyric.split('\n').forEach((lyrics, i)=>{
+                        if (lyrics.length > 0) {
+                            let lyricsTime = lyrics.split(']')[0].substr(1).split(':');
+                            let second = Number(lyricsTime[0] * 60) + Number(lyricsTime[1]);
+                            lyricsArray[second.toFixed(0) ] = lyrics.split(']')[1];
+                        }
+                    });
+                    // console.log(lyricsArray);
+                    this.lrc = lyricsArray[0];
+                    
                 }
             });
             console.log(this.$route.query.id);
@@ -69,25 +113,22 @@
             transform-origin: center top;
             z-index: -1;
             @include pseudo();
-            background: url(../assets/images/1111.jpg);
             opacity: 1;
+            .open-music-warp{
+                position: relative;
+                z-index: 2;
+            }
+            &:after{
+                @include pseudo();
+                background-color: rgba(0,0,0,.5);
+            }
             .m-song-disc{
                 width: 300px;
                 height: 300px;
                 position: relative;
                 margin: 0 auto;
                 margin-top: 70px;
-                &:before{
-                    content:"";
-                    position: absolute;
-                    width: 96px;
-                    height: 137px;
-                    top: -70px;
-                    left: 133px;
-                    background-image:url(../assets/images/disc_light-ip6.png);
-                    background-size: contain;
-                    z-index: 3;
-                }
+                
                 &:after{
                     content:"";
                     position: absolute;
@@ -108,14 +149,20 @@
                         background-size: contain;
                         z-index: 2;
                     }
+                    &:before{
+                        @include pseudo(); 
+                        background-image:url(../assets/images/disc_light-ip6.png);
+                        background-size: contain;
+                        z-index: 3;
+                    }
                     .m-song-img{
                         position: absolute;
                         top:50%;
                         left: 50%;
-                        margin-left: -92px;
-                        margin-top: -92px;
-                        width: 184px;
-                        height: 184px;
+                        margin-left: -95px;
+                        margin-top: -95px;
+                        width: 190px;
+                        height: 190px;
                         border-radius: 50%;
                         overflow: hidden;              
                         background-image: url(../assets/images/disc_default.png);
@@ -139,6 +186,11 @@
             font-size: 18px;
             color: white;
             text-align: center;
+        }
+        .m-song-lritem{
+            font-size: 16px;
+            text-align: center;
+            color: white;
         }
     }
 
