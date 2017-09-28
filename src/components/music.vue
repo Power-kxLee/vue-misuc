@@ -1,16 +1,18 @@
 <template>
     <div class="music-main">
-        <div class="open-music-content">
+        <audio :src="musicUrl" autoplay="autoplay">
+        </audio>
+        <div class="open-music-content" :style="`background-image: url(${this.musicImg})`">
             <div class="m-song-disc">
                 <div class="m-song-turn">
                     <div class="m-song-img">
-                        <img src="../assets/images/109951163024374278.jpg">
+                        <img :src="musicImg">
                     </div>
                 </div>
             </div>
             <article class="m-song-info">
                 <header class="m-song-header">
-                    <span class="m-song-sname">To Know You</span>
+                    <span class="m-song-sname">{{musicName}}</span>
                     <span class="m-song-gap">-</span>
                     <span class="m-song-autr">Do As Infinity</span>
                 </header>
@@ -22,7 +24,26 @@
     export default{
         data() {
             return {
+                musicImg: '',
+                musicName: '',
+                musicUrl: ''
             };
+        },
+        mounted() {
+            this.$ajax.get(`${this.$store.state.misucUrl}/music/url?id=${this.$route.query.id}`).then(d => {
+                // console.log(d);
+                if (d.status === 200) {
+                    this.musicUrl = d.data.data[0].url;
+                }
+            });
+            this.$ajax.get(`${this.$store.state.misucUrl}/song/detail?ids=${this.$route.query.id}`).then(d => {
+                console.log(d);
+                if (d.status === 200) {
+                    this.musicImg = d.data.songs[0].al.picUrl;
+                    // this.musicUrl = d.data.data[0].url;
+                }
+            });
+            console.log(this.$route.query.id);
         }
     };
 </script>
@@ -56,6 +77,17 @@
                 position: relative;
                 margin: 0 auto;
                 margin-top: 70px;
+                &:before{
+                    content:"";
+                    position: absolute;
+                    width: 96px;
+                    height: 137px;
+                    top: -70px;
+                    left: 133px;
+                    background-image:url(../assets/images/disc_light-ip6.png);
+                    background-size: contain;
+                    z-index: 3;
+                }
                 &:after{
                     content:"";
                     position: absolute;
